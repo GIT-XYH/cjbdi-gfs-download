@@ -2,11 +2,13 @@ package com.cjbdi.hbinsert;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import com.cjbdi.doc.detector.DocDetector;
 import com.cjbdi.doc.detector.DocType;
+import com.cjbdi.file.FileUtil;
 import com.cjbdi.fp.docs.Doc2Text;
 import com.cjbdi.gfs.data.DataBlockFile;
 import com.cjbdi.gfs.data.DataStore;
@@ -28,7 +30,7 @@ public class UnzipUtil {
 
 	/**
 	 * trave the zipped file
-	 * 
+	 *
 	 * @param dataPath: input path
 	 * @param start: a subdir in input path, starting read data from this subdir
 	 * @param end: a subdir in input path, ending read data from this subdir
@@ -45,7 +47,7 @@ public class UnzipUtil {
 
 	/**
 	 * open the DataStoreManager object
-	 * 
+	 *
 	 * @param dsmPath: the DataStoreManager path
 	 * @return a DsmGroup object
 	 */
@@ -62,7 +64,7 @@ public class UnzipUtil {
 
 	/**
 	 * open the DataStore object
-	 * 
+	 *
 	 * @param key: name of case type
 	 * @param dsm: the DataStoreManager object
 	 * @return A DataStore object
@@ -79,7 +81,7 @@ public class UnzipUtil {
 
 	/**
 	 * unzip the DataBlockFile
-	 * 
+	 *
 	 * @param fileitor: a DataBlockFile.Iterator object
 	 * @param dsmPath: the DataStoreManager path
 	 * @param dsName: the DataStore name / name of case type
@@ -98,6 +100,7 @@ public class UnzipUtil {
 		try {
 			name = new String(fileitor.name(), "UTF8");
 			byte[] stream = fileitor.unzippedData();
+			FileUtil.saveData(new File("/Users/xuyuanhang/Desktop/gfs2/src/main/resources/testFile"), stream);
 			String[] name_split = name.split("\\:");
 			c_stm = name_split[0].trim();
 			c_ajbs = name_split[1].trim();
