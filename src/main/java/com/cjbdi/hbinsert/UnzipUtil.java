@@ -1,19 +1,15 @@
 package com.cjbdi.hbinsert;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import com.cjbdi.doc.detector.DocDetector;
-import com.cjbdi.doc.detector.DocType;
 import com.cjbdi.file.FileUtil;
-import com.cjbdi.fp.docs.Doc2Text;
 import com.cjbdi.gfs.data.DataBlockFile;
 import com.cjbdi.gfs.data.DataStore;
 import com.cjbdi.gfs.data.DataStoreManager;
-import com.cjbdi.utils.CharsetUtil;
 
 class DsmGroup {
 	public DataStoreManager dsm = null;
@@ -87,56 +83,16 @@ public class UnzipUtil {
 	 * @param dsName: the DataStore name / name of case type
 	 * @return A Ws object
 	 */
-	public Ws unzip(DataBlockFile.Iterator fileitor, String dsmPath, String dsName) {
-		String name = "";
-		String c_stm = "";
-		String c_ajbs = "";
-		String c_mc = "";
-		String c_nr = "";
-		String c_rowkey = "";
-		String c_wsText = "";
-		String db = "";
-		String schema = "";
+	public void unzip(DataBlockFile.Iterator fileitor, String dsmPath, String dsName) {
 		try {
-			name = new String(fileitor.name(), "UTF8");
+			String name = new String(fileitor.name(), "UTF8");
+			System.out.println(name);
 			byte[] stream = fileitor.unzippedData();
-			FileUtil.saveData(new File("/Users/xuyuanhang/Desktop/gfs2/src/main/resources/testFile"), stream);
-			String[] name_split = name.split("\\:");
-			c_stm = name_split[0].trim();
-			c_ajbs = name_split[1].trim();
-			c_mc = name_split[3].trim();
-			c_nr = name_split[4].trim();
-			c_rowkey = c_stm + ((c_stm+c_mc+c_nr).hashCode()+"000000").replace("-", "").substring(0,6); //rowkey生成规则
-			String[] path_split = dsmPath.split("\\/");
-			db = path_split[path_split.length - 1].trim();
-			schema = dsName.split("\\/")[0].trim();
-			if (c_stm.isEmpty()) {
-				c_stm = name_split[1].trim(); // 此文书为"09"法标的文书
-			}
-			DocType type = DocDetector.detect(stream);
-			if (type == null) {
-				if (CharsetUtil.isUTF8(stream)) {
-					c_wsText = new String(stream, "UTF8");
-				} else {
-					c_wsText = new String(stream, "GBK");
-				}
-			} else {
-				try {
-					Doc2Text dt = new Doc2Text();
-					if (!dt.handleData(stream)) {
-
-					}
-					c_wsText = dt.getPlainText();
-				}catch (Exception e) {
-				}
-			}
-			if (c_wsText == null || c_wsText.isEmpty()) {
-				c_wsText = "";
-			}
-		} catch (Exception e) {
+//			FileUtil.saveData(new File("/tmp/xyh/wsDoc/ws" + new Date().getTime()+".doc"), stream);
+//			FileUtil.saveData(new File("/Users/xuyuanhang/Desktop/wsDoc/ws" + new Date().getTime() + ".doc"), stream);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
 		}
-		Ws wsObject = new Ws(db, schema, c_rowkey, c_stm, c_wsText, c_ajbs, c_mc, c_nr);
-		return wsObject;
 	}
 }
 

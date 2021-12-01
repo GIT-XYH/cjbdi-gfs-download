@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/gfs2.iml" filepath="$PROJECT_DIR$/.idea/gfs2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/cjbdi-gfs-download.iml" filepath="$PROJECT_DIR$/.idea/cjbdi-gfs-download.iml" />
     </modules>
   </component>
 </project>
